@@ -1,4 +1,4 @@
-build
+build:
 - maven: clean install
 - docker: web/Dockerfile
 
