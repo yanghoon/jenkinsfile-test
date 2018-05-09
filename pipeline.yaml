@@ -1,0 +1,10 @@
+build
+- maven: clean install
+- docker: web/Dockerfile
+
+deploy:
+- k8s: k8s/*.yaml
+
+stage:
+- build
+- deploy
