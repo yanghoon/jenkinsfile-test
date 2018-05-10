@@ -1,6 +1,6 @@
 build:
-- maven: clean install
-- docker: web/Dockerfile
+- maven: mvn --version
+- docker: docker version
 
 deploy:
 - k8s: k8s/*.yaml
