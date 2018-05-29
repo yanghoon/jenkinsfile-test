@@ -1,25 +1,27 @@
-build:
-- maven: mvn --version
-- docker: docker version
+type: container
 
-deploy:
-- k8s: k8s/*.yaml
+build:
+- maven:
+    goal: clean install
+    options: -Dmaven.test.skip=true
+- docker:
+  - docker
+  - version
+
+#deploy:
+#- k8s: k8s/*.yaml
 
 agent:
   containers:
-  - name: maven
-    image: maven:3.3.9-jdk-8-alpine
-    ttyEnabled: true
-    command: cat
-  - name: docker
-    image: docker
+  - name: kubectl
+    image: 'lachlanevenson/k8s-kubectl'
     ttyEnabled: true
     command: cat
   volumes:
-  - hostPathVolume:
-      hostPath: '/var/run/docker.sock'
-      mountPath: '/var/run/docker.sock'
-  serviceAccount: jenkins-release
+  - persistentVolumeClaim:
+      claimName: slave-workspace
+      mountPath: /root/.m2/repository
+      readOnly: false
 
 stage:
 - build
