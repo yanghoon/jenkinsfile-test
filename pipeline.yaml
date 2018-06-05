@@ -1,4 +1,7 @@
-type: container
+stage:
+- build
+- deploy
+- post
 
 build:
 - maven:
@@ -8,13 +11,16 @@ build:
   - docker
   - version
 
-#deploy:
-#- k8s: k8s/*.yaml
+deploy:
+- kubectl: kubectl get all
+- golang: go version
 
+#agent: [maven, docker, kubectl]
 agent:
+  profile: [maven, docker, kubectl]
   containers:
-  - name: kubectl
-    image: 'lachlanevenson/k8s-kubectl'
+  - name: golang
+    image: golang:1.8.0
     ttyEnabled: true
     command: cat
   volumes:
@@ -23,6 +29,4 @@ agent:
       mountPath: /root/.m2/repository
       readOnly: false
 
-stage:
-- build
-- deploy
+#type: container

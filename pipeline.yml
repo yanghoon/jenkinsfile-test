@@ -1,0 +1,12 @@
+build:
+- maven: mvn --version
+- docker: docker version
+
+deploy:
+- kubectl: kubectl version
+
+agent: [maven, docker, kubectl]
+
+stage:
+- build
+- deploy
